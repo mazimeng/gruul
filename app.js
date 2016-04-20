@@ -3,6 +3,10 @@ var sha1= require('sha1');
 
 var app = express();
 
+app.get('/hi', function (req, res) {
+  res.send('hi');
+});
+
 app.get('/', function (req, res) {
   var signature = req.query.signature;
   var timestamp = req.query.timestamp;
