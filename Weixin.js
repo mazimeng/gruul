@@ -71,8 +71,8 @@ Weixin.prototype.routeGua = function(textMessage) {
         }
         else {
           responseMessage.content = docs.map(function(v){
-            return v.guaUpper + v.numberUpper + '\n' + v.guaLower + v.numberLower;
-          }).join(',');
+            return v.guaUpper + v.numberUpper + '\n' + v.guaLower + v.numberLower + '\n';
+          }).join('');
         }
         resolve(responseMessage.toXml());
       });
