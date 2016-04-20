@@ -1,7 +1,9 @@
 var express = require('express');
 var sha1= require('sha1');
+var bodyParser = require('body-parser');
 
 var app = express();
+app.use(bodyParser.text())
 
 var processWeixin = function(req, res) {
   console.log(req.body);
