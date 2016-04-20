@@ -1,14 +1,33 @@
 var express = require('express');
 var sha1= require('sha1');
 var bodyParser = require('body-parser');
-var parseString = require('xml2js').parseString;
+var xml2js = require('xml2js');
 
 var app = express();
 app.use(bodyParser.text({ type: 'text/xml' }));
 
+var cdata = function(text) {
+  //return text;
+  return '<![CDATA['+text+']]>';
+};
 var processWeixin = function(req, res) {
-  console.log(req.body, req.headers, req.params);
-  res.send('success');
+  xml2js.parseString(req.body, function(err, result){
+    console.dir(result);
+    var msg = {
+      xml: {
+        ToUserName: result.xml.FromUserName,
+        FromUserName: '"'+result.xml.ToUserName[0] +'"',
+        CreateTime: 12345678,
+        Content: cdata('hello\nworld')
+      }
+    };
+    var builder = new xml2js.Builder({
+      cdata: true
+    });
+    var xml = builder.buildObject(msg);
+    console.log(xml);
+    res.send('success');
+  });
 };
 
 app.get('/hi', function (req, res) {
