@@ -51,8 +51,14 @@ Weixin.prototype.routeGua = function(textMessage) {
   var tokens = textMessage.content.trim().split(' ');
 
   var year = tokens[0];
+  var responseMessage = new TextMessage();
+  responseMessage.toUserName = textMessage.fromUserName;
+  responseMessage.fromUserName = textMessage.toUserName;
+  responseMessage.createTime = 12345678;
+
   if(isNaN(year)) return new Promise(function (resolve, reject) {
-    resolve('success');
+    responseMessage.content = 'invalid arguments';
+    resolve(responseMessage.toXml());
   });
 
   //if its 4-digit years
@@ -60,11 +66,6 @@ Weixin.prototype.routeGua = function(textMessage) {
     //query
     return new Promise(function (resolve, reject) {
       self.gua.findByYear(year).then(function(docs){
-        var responseMessage = new TextMessage();
-        responseMessage.toUserName = textMessage.fromUserName;
-        responseMessage.fromUserName = textMessage.toUserName;
-        responseMessage.createTime = 12345678;
-
         if(docs.length == 0) {
           responseMessage.content = 'no record';
         }
@@ -93,12 +94,7 @@ Weixin.prototype.routeGua = function(textMessage) {
     //update
     return new Promise(function (resolve, reject) {
       self.gua.update(update).then(function(){
-        var responseMessage = new TextMessage();
-        responseMessage.toUserName = textMessage.fromUserName;
-        responseMessage.fromUserName = textMessage.toUserName;
-        responseMessage.createTime = 12345678;
         responseMessage.content = 'update success';
-
         resolve(responseMessage.toXml());
       });
     });

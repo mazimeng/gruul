@@ -47,6 +47,7 @@ Gua.prototype.findByYear = function(year) {
 Gua.prototype.generateYears = function(year) {
   var years = [];
   var step = 60;
+  year = parseInt(year);
   for(var i=1; i<=yearLoop; ++i) {
     years.push(year + (i * step));
     years.push(year - (i * step));

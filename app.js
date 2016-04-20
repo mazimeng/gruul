@@ -3,6 +3,7 @@ var sha1= require('sha1');
 var bodyParser = require('body-parser');
 var cheerio = require('cheerio');
 var MongoClient = require('mongodb').MongoClient;
+var config = require('./config');
 
 var weixin = require('./Weixin');
 var Gua = require('./Gua');
