@@ -3,10 +3,10 @@ var sha1= require('sha1');
 var bodyParser = require('body-parser');
 
 var app = express();
-app.use(bodyParser.text())
+app.use(bodyParser.text({ type: 'text/xml' }));
 
 var processWeixin = function(req, res) {
-  console.log(req.body);
+  console.log(req.body, req.headers);
   res.send('success');
 };
 
