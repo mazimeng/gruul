@@ -2,12 +2,23 @@ var express = require('express');
 var sha1= require('sha1');
 var bodyParser = require('body-parser');
 var cheerio = require('cheerio');
+var MongoClient = require('mongodb').MongoClient;
 
 var weixin = require('./Weixin');
+var Gua = require('./Gua');
 var Weixin = weixin.Weixin;
 var TextMessage = weixin.TextMessage;
 
 var app = express();
+var db = null;
+MongoClient.connect(config.db.url, function(err, database) {
+  if(err) console.log(err);
+  db = database;
+
+  app.listen(3000);
+  console.log('Listening on port 3000');
+});
+
 app.use(bodyParser.text({ type: 'text/xml' }));
 
 app.get('/hi', function (req, res) {
@@ -43,8 +54,4 @@ app.get('/', function (req, res) {
   else {
     res.send('Bad Request');
   }
-});
-
-app.listen(3000, function () {
-  console.log('app is listening on port 3000');
 });

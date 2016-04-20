@@ -64,10 +64,15 @@ Weixin.prototype.routeGua = function(textMessage) {
         responseMessage.toUserName = textMessage.fromUserName;
         responseMessage.fromUserName = textMessage.toUserName;
         responseMessage.createTime = 12345678;
-        responseMessage.content = docs.map(function(v){
-          return v.guaUpper + v.numberUpper + '\n' + v.guaLower + v.numberLower;
-        }).join(',');
 
+        if(docs.length == 0) {
+          responseMessage.content = 'no record';
+        }
+        else {
+          responseMessage.content = docs.map(function(v){
+            return v.guaUpper + v.numberUpper + '\n' + v.guaLower + v.numberLower;
+          }).join(',');
+        }
         resolve(responseMessage.toXml());
       });
     });
