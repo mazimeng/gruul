@@ -3,49 +3,24 @@ var sha1= require('sha1');
 var bodyParser = require('body-parser');
 var cheerio = require('cheerio');
 
+var weixin = require('./Weixin');
+var Weixin = weixin.Weixin;
+var TextMessage = weixin.TextMessage;
+
 var app = express();
 app.use(bodyParser.text({ type: 'text/xml' }));
-
-var cdata = function(text) {
-  return '<![CDATA['+text+']]>';
-};
-
-var processWeixin = function(req, res) {
-  var $ = cheerio.load(req.body, {
-    xmlMode: true
-  });
-  var msg = {
-    ToUserName: $('xml FromUserName').text(),
-    FromUserName: $('xml ToUserName').text(),
-    CreateTime: 12345678,
-    Content: 'hello\nworld'
-  };
-  console.log('hehe', $('xml Content').text().indexOf('\n'));
-
-  $ = cheerio.load('<xml>', {
-    xmlMode: true
-  });
-  $('xml').append('<ToUserName>');
-  $('xml').append('<FromUserName>');
-  $('xml').append('<CreateTime>');
-  $('xml').append('<MsgType>');
-  $('xml').append('<Content>');
-  $('xml ToUserName').append(cdata(msg.ToUserName));
-  $('xml FromUserName').append(cdata(msg.FromUserName));
-  $('xml CreateTime').append(msg.CreateTime);
-  $('xml MsgType').append(cdata('text'));
-  $('xml Content').append(cdata(msg.Content));
-
-  console.log(req.body, msg, $.xml());
-  res.send($.xml());
-};
 
 app.get('/hi', function (req, res) {
   res.send('hi');
 });
 
 app.post('/', function (req, res) {
-  processWeixin(req, res);
+  var gua = new Gua(db);
+  var weixin = new Weixin(gua);
+  var text = new TextMessage(req.body);
+  weixin.routeGua(text).then(function(msg){
+    res.send(msg);
+  });
 });
 app.get('/', function (req, res) {
   var signature = req.query.signature;
