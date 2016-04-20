@@ -3,10 +3,18 @@ var sha1= require('sha1');
 
 var app = express();
 
+var processWeixin = function(req, res) {
+  console.log(req.body);
+  res.send('success');
+};
+
 app.get('/hi', function (req, res) {
   res.send('hi');
 });
 
+app.post('/', function (req, res) {
+  processWeixin(req, res);
+});
 app.get('/', function (req, res) {
   var signature = req.query.signature;
   var timestamp = req.query.timestamp;
