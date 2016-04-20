@@ -1,12 +1,13 @@
 var express = require('express');
 var sha1= require('sha1');
 var bodyParser = require('body-parser');
+var parseString = require('xml2js').parseString;
 
 var app = express();
 app.use(bodyParser.text({ type: 'text/xml' }));
 
 var processWeixin = function(req, res) {
-  console.log(req.body, req.headers);
+  console.log(req.body, req.headers, req.params);
   res.send('success');
 };
 
