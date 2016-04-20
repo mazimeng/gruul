@@ -47,7 +47,6 @@ Weixin.prototype.route = function(input) {
 };
 
 Weixin.prototype.routeGua = function(textMessage) {
-  debugger
   var self = this;
   var tokens = textMessage.content.trim().split(' ');
 
@@ -60,10 +59,7 @@ Weixin.prototype.routeGua = function(textMessage) {
   if(tokens.length == 1) {
     //query
     return new Promise(function (resolve, reject) {
-      debugger
       self.gua.findByYear(year).then(function(docs){
-        debugger
-        console.log(year, typeof(year));
         var responseMessage = new TextMessage();
         responseMessage.toUserName = textMessage.fromUserName;
         responseMessage.fromUserName = textMessage.toUserName;
@@ -77,7 +73,30 @@ Weixin.prototype.routeGua = function(textMessage) {
     });
   }
   else {
+    var guaUpper = tokens[1];
+    var guaLower = tokens[2];
+    var numberUpper = tokens[3];
+    var numberLower = tokens[4];
+    var update = {
+      guaUpper: guaUpper,
+      guaLower: guaLower,
+      year: year,
+      numberUpper: numberUpper,
+      numberLower: numberLower
+    };
+
     //update
+    return new Promise(function (resolve, reject) {
+      self.gua.update(update).then(function(){
+        var responseMessage = new TextMessage();
+        responseMessage.toUserName = textMessage.fromUserName;
+        responseMessage.fromUserName = textMessage.toUserName;
+        responseMessage.createTime = 12345678;
+        responseMessage.content = 'update success';
+
+        resolve(responseMessage.toXml());
+      });
+    });
   }
 }
 
