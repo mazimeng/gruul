@@ -1,7 +1,7 @@
 #!/bin/sh
-docker run -d \
+docker run --rm -it \
 --name gruul-server \
 -p 3000:3000 \
 -v "$PWD":'/usr/src/app' \
 -w '/usr/src/app' \
-node:5 node app.js
+node:5 /bin/bash
