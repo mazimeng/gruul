@@ -1,7 +1,7 @@
 var express = require('express');
 var sha1= require('sha1');
 var bodyParser = require('body-parser');
-var xml2js = require('xml2js');
+var cheerio = require('cheerio');
 
 var app = express();
 app.use(bodyParser.text({ type: 'text/xml' }));
@@ -10,24 +10,32 @@ var cdata = function(text) {
   //return text;
   return '<![CDATA['+text+']]>';
 };
+
 var processWeixin = function(req, res) {
-  xml2js.parseString(req.body, function(err, result){
-    console.dir(result);
-    var msg = {
-      xml: {
-        ToUserName: result.xml.FromUserName,
-        FromUserName: '"'+result.xml.ToUserName[0] +'"',
-        CreateTime: 12345678,
-        Content: cdata('hello\nworld')
-      }
-    };
-    var builder = new xml2js.Builder({
-      cdata: true
-    });
-    var xml = builder.buildObject(msg);
-    console.log(xml);
-    res.send('success');
+  var $ = cheerio.load(req.body, {
+    xmlMode: true
   });
+  var msg = {
+    ToUserName: $('xml FromUserName').text(),
+    FromUserName: $('xml ToUserName').text(),
+    CreateTime: 12345678,
+    Content: 'hello\nworld'
+  };
+
+  $ = cheerio.load('<xml>', {
+    xmlMode: true
+  });
+  $('xml').append('ToUserName');
+  $('xml').append('FromUserName');
+  $('xml').append('CreateTime');
+  $('xml').append('Content');
+  $('xml ToUserName').text(cdata(msg.ToUserName));
+  $('xml FromUserName').text(cdata(msg.FromUserName));
+  $('xml CreateTime').text(msg.CreateTime);
+  $('xml Content').text(cdata(msg.Content));
+
+  console.log($.xml());
+  res.send('success');
 };
 
 app.get('/hi', function (req, res) {
