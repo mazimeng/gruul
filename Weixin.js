@@ -56,13 +56,15 @@ Weixin.prototype.routeGua = function(textMessage) {
   responseMessage.fromUserName = textMessage.toUserName;
   responseMessage.createTime = 12345678;
 
-  if(isNaN(year)) return new Promise(function (resolve, reject) {
+  if(tokens.length!=1 && tokens.length != 5) return new Promise(function (resolve, reject) {
     responseMessage.content = 'invalid arguments';
     resolve(responseMessage.toXml());
   });
 
+  if(isNaN(year)) {
+  }
   //if its 4-digit years
-  if(tokens.length == 1) {
+  else if(tokens.length == 1) {
     //query
     return new Promise(function (resolve, reject) {
       self.gua.findByYear(year).then(function(docs){
