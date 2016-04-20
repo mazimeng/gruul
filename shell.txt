@@ -1,6 +1,6 @@
 #!/bin/sh
 docker run --rm -it \
---name gruul-server \
+--name gruul-shell \
 -p 3000:3000 \
 -v "$PWD":'/usr/src/app' \
 -w '/usr/src/app' \
