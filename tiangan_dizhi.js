@@ -51,7 +51,7 @@ TianganDizhi.prototype.findSymbol = function(first, second){
   dizhiIndex = dizhiIndex >= 0 ? dizhiIndex : DI_ZHI.indexOf(second);
 
   if(tianganIndex < 0 || dizhiIndex < 0) {
-    return null;
+    return -1;
   }
 
   var symbol = symbols[tianganIndex][dizhiIndex];

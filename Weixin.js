@@ -88,7 +88,7 @@ Weixin.prototype.route = function(textMessage) {
     var second = tianganDizhi[1];
     var symbol = self.tianganDizhi.findSymbol(first, second);
 
-    if(!symbol) {
+    if(symbol<0) {
       return new Promise(function (resolve, reject) {
         resolve(self.replyXml(textMessage, 'invalid arguments'));
       });
