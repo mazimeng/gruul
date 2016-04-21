@@ -36,13 +36,13 @@ TianganDizhi.prototype.translateSymbol = function(symbol){
   var name = null;
   switch(symbol) {
     case 0:
-      name = '空';
+      name = '弱';
       break;
     case 1:
-      name = '勾';
+      name = '旺';
       break;
     case 2:
-      name = '圈';
+      name = '弱';
       break;
     case 3:
       name = '九';
