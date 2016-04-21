@@ -36,4 +36,6 @@ MongoClient.connect(config.db.url(), function(err, database) {
   weixin.route(text).then(function(msg){
     console.log(msg);
   });
+
+  console.log(weixin.printTianganDizhi());
 });

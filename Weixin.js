@@ -65,12 +65,49 @@ Weixin.prototype.replyXml = function(textMessage, what) {
   return responseMessage.toXml();
 };
 
+Weixin.prototype.printTianganDizhi = function() {
+  var self = this;
+  var tiangan = self.tianganDizhi.getTiangan();
+  var dizhi = self.tianganDizhi.getDizhi();
+  var symbols = self.tianganDizhi.getSymbols();
+
+
+  var blank = '  ';
+  var pic = blank;
+  for(var k=0; k<dizhi.length; ++k) {
+    pic += dizhi[k];
+  }
+  pic += '\n';
+  for(var i=0; i<tiangan.length; ++i) {
+    pic += tiangan[i];
+    for(var j=0; j<dizhi.length; ++j) {
+      var s = symbols[i][j];
+      if(s == 0) {
+        pic += blank;
+      }
+      else {
+        pic += self.tianganDizhi.translateSymbol(symbols[i][j]);
+      }
+    }
+    pic += '\n';
+  }
+  return pic;
+};
+
 Weixin.prototype.route = function(textMessage) {
   var self = this;
-  var tokens = textMessage.content.trim().split(' ');
+  var content = textMessage.content.trim();
+  var tokens = content.split(' ');
 
   var year = tokens[0];
   var reply = 'success';
+
+  if(content.toUpperCase() == 'TIANGANDIZHU') {
+    return new Promise(function (resolve, reject) {
+      var tiangandizhu = self.printTianganDizhi();
+      resolve(self.replyXml(textMessage, tiangandizhu));
+    });
+  }
 
   if(tokens.length!=1 && tokens.length != 5) return new Promise(function (resolve, reject) {
     resolve(self.replyXml(textMessage, 'invalid arguments'));

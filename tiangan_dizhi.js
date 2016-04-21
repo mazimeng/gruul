@@ -20,6 +20,18 @@ function TianganDizhi() {
 
 };
 
+TianganDizhi.prototype.getSymbols = function() {
+  return symbols;
+};
+
+TianganDizhi.prototype.getTiangan = function() {
+  return TIAN_GAN;
+};
+
+TianganDizhi.prototype.getDizhi = function() {
+  return DI_ZHI;
+};
+
 TianganDizhi.prototype.translateSymbol = function(symbol){
   var name = null;
   switch(symbol) {
