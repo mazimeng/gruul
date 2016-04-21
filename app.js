@@ -7,12 +7,14 @@ var config = require('./config');
 
 var weixin = require('./Weixin');
 var Gua = require('./Gua');
+var TianganDizhi = require('../tiangan_dizhi');
+
 var Weixin = weixin.Weixin;
 var TextMessage = weixin.TextMessage;
 
 var app = express();
 var db = null;
-MongoClient.connect(config.db.url, function(err, database) {
+MongoClient.connect(config.db.url(), function(err, database) {
   if(err) console.log(err);
   db = database;
 
@@ -28,9 +30,11 @@ app.get('/hi', function (req, res) {
 
 app.post('/', function (req, res) {
   var gua = new Gua(db);
-  var weixin = new Weixin(gua);
+  var tianganDizhi = new TianganDizhi();
+  var weixin = new Weixin(gua, tianganDizhi);
   var text = new TextMessage(req.body);
-  weixin.routeGua(text).then(function(msg){
+  
+  weixin.route(text).then(function(msg){
     res.send(msg);
   });
 });
