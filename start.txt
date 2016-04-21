@@ -4,4 +4,5 @@ docker run -d \
 -p 3000:3000 \
 -v "$PWD":'/usr/src/app' \
 -w '/usr/src/app' \
+--link gruul-mongodb:gruul-mongodb \
 node:5 node app.js
