@@ -20,17 +20,19 @@ MongoClient.connect(config.db.url(), function(err, database) {
   else console.log('mongodb connected');
   db = database;
 
-  var xml = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>1348831860</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[甲亥]]></Content> <MsgId>1234567890123456</MsgId> </xml>";
+  var xml = function(content) {
+      return "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>1348831860</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA["+content+"]]></Content> <MsgId>1234567890123456</MsgId> </xml>";
+  };
+
   var gua = new Gua(db);
   var tianganDizhi = new TianganDizhi();
   var weixin = new Weixin(gua, tianganDizhi);
-  var text = new TextMessage(xml);
-  weixin.route(text).then(function(msg){
-    console.log(msg);
-  });
+  var text = new TextMessage(xml(1983));
+  // weixin.route(text).then(function(msg){
+  //   console.log(msg);
+  // });
 
-  xml = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>1348831860</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[1983]]></Content> <MsgId>1234567890123456</MsgId> </xml>";
-  text = new TextMessage(xml);
+  text = new TextMessage(xml('甲午'));
   weixin.route(text).then(function(msg){
     console.log(msg);
   });
