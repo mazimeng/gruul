@@ -72,7 +72,7 @@ Weixin.prototype.printTianganDizhi = function() {
   var symbols = self.tianganDizhi.getSymbols();
 
 
-  var blank = '  ';
+  var blank = '　'; //this is not 2 whitespaces. its a unicode 3000 A1A1
   var pic = blank;
   for(var k=0; k<dizhi.length; ++k) {
     pic += dizhi[k];
