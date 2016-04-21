@@ -7,7 +7,7 @@ var config = require('./config');
 
 var weixin = require('./Weixin');
 var Gua = require('./Gua');
-var TianganDizhi = require('../tiangan_dizhi');
+var TianganDizhi = require('./tiangan_dizhi');
 
 var Weixin = weixin.Weixin;
 var TextMessage = weixin.TextMessage;
