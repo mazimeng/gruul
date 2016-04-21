@@ -28,4 +28,10 @@ MongoClient.connect(config.db.url(), function(err, database) {
   weixin.route(text).then(function(msg){
     console.log(msg);
   });
+
+  xml = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>1348831860</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[1983]]></Content> <MsgId>1234567890123456</MsgId> </xml>";
+  text = new TextMessage(xml);
+  weixin.route(text).then(function(msg){
+    console.log(msg);
+  });
 });
