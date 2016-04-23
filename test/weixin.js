@@ -27,10 +27,10 @@ MongoClient.connect(config.db.url(), function(err, database) {
   var gua = new Gua(db);
   var tianganDizhi = new TianganDizhi();
   var weixin = new Weixin(gua, tianganDizhi);
-  var text = new TextMessage(xml(1983));
-  // weixin.route(text).then(function(msg){
-  //   console.log(msg);
-  // });
+  var text = new TextMessage(xml(1980));
+  weixin.route(text).then(function(msg){
+    console.log(msg);
+  });
 
   text = new TextMessage(xml('甲午'));
   weixin.route(text).then(function(msg){
