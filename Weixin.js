@@ -109,7 +109,7 @@ Weixin.prototype.route = function(textMessage) {
     });
   }
 
-  if(tokens.length!=1 && tokens.length != 5) return new Promise(function (resolve, reject) {
+  if(tokens.length!=1 && !(tokens.length >= 5 && tokens.length <= 7)) return new Promise(function (resolve, reject) {
     resolve(self.replyXml(textMessage, 'invalid arguments'));
   });
 
@@ -147,11 +147,17 @@ Weixin.prototype.route = function(textMessage) {
           content = 'no record';
         }
         else {
-          content = docs.map(function(v, index){
+          content = doc.sort(function(a, b) {
+            if(a.order && b.order) return (a.order-b.order);
+            return 1;
+          }).map(function(v, index){
             var separater = '\n\n';
             if(index == 0) separater = '';
 
-            return separater + v.guaUpper + v.numberUpper + '\n' + v.guaLower + v.numberLower;
+            var text = separater + v.guaUpper + v.numberUpper + '\n' + v.guaLower + v.numberLower;
+            if(v.end) {
+              text += '\n\n' + v.end;
+            }
           }).join('');
         }
         resolve(self.replyXml(textMessage, content));
@@ -163,13 +169,25 @@ Weixin.prototype.route = function(textMessage) {
     var guaLower = tokens[2];
     var numberUpper = tokens[3];
     var numberLower = tokens[4];
+    
+    var end = null;
+    var order = 1;
+    
     var update = {
       guaUpper: guaUpper,
       guaLower: guaLower,
       year: year,
       numberUpper: numberUpper,
-      numberLower: numberLower
+      numberLower: numberLower,
     };
+    if(tokens.length >= 6) {
+      order = tokens[5];
+      update.order = order;
+    }
+    if(tokens.length == 7) {
+      end = tokens[6];
+      update.end = end;
+    }
 
     //update
     return new Promise(function (resolve, reject) {

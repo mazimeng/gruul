@@ -10,6 +10,8 @@ function Gua(db) {
 //   year: 0000,
 //   numberUpper: 0,
 //   numberLower: 0
+//   end: 'xxxx'
+//   order: <number>
 // };
 Gua.prototype.update = function(guaUpdate) {
   var self = this;
@@ -20,7 +22,9 @@ Gua.prototype.update = function(guaUpdate) {
     guaLower: guaUpdate.guaLower,
     years: years,
     numberUpper: guaUpdate.numberUpper,
-    numberLower: guaUpdate.numberLower
+    numberLower: guaUpdate.numberLower,
+    end: guaUpdate.end,
+    order: parseInt(guaUpdate.order)
   };
 
   console.log('updating doc', doc);
