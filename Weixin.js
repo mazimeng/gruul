@@ -147,8 +147,11 @@ Weixin.prototype.route = function(textMessage) {
           content = 'no record';
         }
         else {
-          content = docs.map(function(v){
-            return v.guaUpper + v.numberUpper + '\n' + v.guaLower + v.numberLower + '\n';
+          content = docs.map(function(v, index){
+            var separater = '\n\n';
+            if(index == 0) separater = '';
+
+            return separater + v.guaUpper + v.numberUpper + '\n' + v.guaLower + v.numberLower;
           }).join('');
         }
         resolve(self.replyXml(textMessage, content));
