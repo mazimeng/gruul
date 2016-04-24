@@ -8,6 +8,7 @@ var process = require('process');
 
 var weixin = require('../Weixin');
 var Gua = require('../Gua');
+var Logger = require('../logger');
 var TianganDizhi = require('../tiangan_dizhi');
 var Weixin = weixin.Weixin;
 var TextMessage = weixin.TextMessage;
@@ -25,8 +26,9 @@ MongoClient.connect(config.db.url(), function(err, database) {
   };
 
   var gua = new Gua(db);
+  var logger = new Logger(db);
   var tianganDizhi = new TianganDizhi();
-  var weixin = new Weixin(gua, tianganDizhi);
+  var weixin = new Weixin(gua, tianganDizhi, logger);
   var text = new TextMessage(xml(1980));
   weixin.route(text).then(function(msg){
     console.log(msg);

@@ -4,10 +4,10 @@ var bodyParser = require('body-parser');
 var cheerio = require('cheerio');
 var MongoClient = require('mongodb').MongoClient;
 var config = require('./config');
-
 var weixin = require('./Weixin');
 var Gua = require('./Gua');
 var TianganDizhi = require('./tiangan_dizhi');
+var Logger = require('./logger');
 
 var Weixin = weixin.Weixin;
 var TextMessage = weixin.TextMessage;
@@ -31,7 +31,8 @@ app.get('/hi', function (req, res) {
 app.post('/', function (req, res) {
   var gua = new Gua(db);
   var tianganDizhi = new TianganDizhi();
-  var weixin = new Weixin(gua, tianganDizhi);
+  var logger = new Logger(db);
+  var weixin = new Weixin(gua, tianganDizhi, logger);
   var text = new TextMessage(req.body);
   
   weixin.route(text).then(function(msg){

@@ -6,9 +6,10 @@ var cdata = function(text) {
   return '<![CDATA['+text+']]>';
 };
 
-function Weixin(gua, tianganDizhi) {
+function Weixin(gua, tianganDizhi, logger) {
   this.gua = gua;
   this.tianganDizhi = tianganDizhi;
+  this.logger = logger;
 };
 
 function TextMessage(xml) {
@@ -23,6 +24,7 @@ function TextMessage(xml) {
   this.createTime = $('xml CreateTime').text();
   this.content = $('xml Content').text();
   // this.msgId = $('xml MsgId').text();
+  this.xml = xml;
 };
 
 TextMessage.prototype.toXml = function() {
@@ -96,6 +98,9 @@ Weixin.prototype.printTianganDizhi = function() {
 
 Weixin.prototype.route = function(textMessage) {
   var self = this;
+  
+  self.logger.log(textMessage);
+
   var content = textMessage.content.trim();
   var tokens = content.split(' ');
 
@@ -147,7 +152,7 @@ Weixin.prototype.route = function(textMessage) {
           content = 'no record';
         }
         else {
-          content = doc.sort(function(a, b) {
+          content = docs.sort(function(a, b) {
             if(a.order && b.order) return (a.order-b.order);
             return 1;
           }).map(function(v, index){
@@ -158,6 +163,7 @@ Weixin.prototype.route = function(textMessage) {
             if(v.end) {
               text += '\n\n' + v.end;
             }
+            return text;
           }).join('');
         }
         resolve(self.replyXml(textMessage, content));
