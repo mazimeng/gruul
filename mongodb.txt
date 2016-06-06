@@ -1,1 +1,2 @@
 docker run --name gruul-mongodb -d mongo
+docker run --name gruul-tool -it --rm --link=gruul-mongodb -v $PWD/:/usr/src/app mongo /bin/bash
